@@ -1,0 +1,32 @@
+﻿# Environment & Secrets
+.env
+*.env.local
+
+# Virtual environments
+.venv/
+venv/
+env/
+
+# Python cache & build
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+build/
+dist/
+*.egg-info/
+
+# Tests & Coverage
+.pytest_cache/
+.coverage
+htmlcov/
+.ruff_cache/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# OS & Editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/

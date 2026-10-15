@@ -1,0 +1,45 @@
+{
+  "issues": [
+    {
+      "column": "amount",
+      "rows_affected": 6087,
+      "impact": "Subestimaci\u00f3n del TPV real de los merchants si se descartan. Ruido en modelos de ML.",
+      "fix": "Imputar con la mediana de las transacciones del merchant o pedir correcci\u00f3n al origen."
+    },
+    {
+      "column": "transaction_date",
+      "rows_affected": 9014,
+      "impact": "Data leakage in ML si se usan estas transacciones para predecir churn en la reference_date.",
+      "fix": "Filtrar todas las transacciones donde transaction_date > reference_date antes de generar KPIs/features."
+    },
+    {
+      "column": "last_complaint_date",
+      "rows_affected": 3535,
+      "impact": "Data leakage en ML, la variable last_complaint_date contiene informaci\u00f3n del futuro respecto a reference_date.",
+      "fix": "Setear last_complaint_date a NaT para las filas donde sea estrictamente mayor a reference_date."
+    },
+    {
+      "column": "cancellation_reason",
+      "rows_affected": 11609,
+      "impact": "Inconsistencia l\u00f3gica (una transacci\u00f3n no puede estar aprobada y cancelada al mismo tiempo). Afecta m\u00e9tricas y features.",
+      "fix": "Investigar si 'approved' es el estado final o si la transacci\u00f3n fue cancelada despu\u00e9s, asumiendo entonces estado 'reversed'."
+    },
+    {
+      "column": "Multiple (Business Key)",
+      "rows_affected": 8617,
+      "impact": "Doble conteo en TPV y volumen de transacciones, inflando el rendimiento real de los merchants.",
+      "fix": "Aplicar drop_duplicates usando el subconjunto de columnas l\u00f3gicas que definen una transacci\u00f3n \u00fanica."
+    },
+    {
+      "column": "cancellation_reason",
+      "rows_affected": 13219,
+      "impact": "Data leakage evidente. La variable contiene info post-evento (solo se rellena al hacer churn). Arruinar\u00eda el ML.",
+      "fix": "Eliminar cancellation_reason antes del split y modelado."
+    }
+  ],
+  "summary": {
+    "n_rows": 204000,
+    "n_cols": 13,
+    "n_issues": 6
+  }
+}
